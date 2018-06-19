@@ -1,0 +1,172 @@
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Josefin',sans-serif;
+}
+
+body {
+	font-family: Josefin,sans-serif;
+}
+
+.slide h2 {
+	margin: 0 0 37px;
+	color: #666;
+	font: 700 40px/1 'Josefin',sans-serif;
+}
+
+.slide {
+    color: #fdcb26;
+    background: #073642;
+}
+.slide h2 {
+    color: #fdcb26;
+    margin-top: -80px;
+}
+
+.slide p {
+    margin-bottom: 10px;
+}
+
+.standout {
+  font-size: 36px;
+}
+
+.picture {
+  width: 100%        
+}
+
+.tall_picture {
+  width: 75%;
+}
+
+.very_tall_picture {
+  width: 65%;
+}
+
+.example {
+  background: #000000;
+}
+
+.highlight .c {
+    color: green;    
+}
+
+i.fa {
+    font-style: normal;
+}
+
+ul.no-bullets > li::before {
+    display: none;
+    text-indent: 0;
+}
+
+ul.no-bullets > li {
+    text-indent: 0;
+}
+
+.monofa {
+    width: 1.5em;
+    margin-right: 0.5em;
+    display: inline-block;
+    text-align: center;
+}
+
+.fa-bullets > li {
+    margin-left: -2em;
+}
+
+.slide pre code {
+  color: #f4bf75;
+  line-height: 30px;
+}
+
+.codesmall pre code {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.slide a {
+  border-bottom: none;
+}
+
+a {
+  color: white !important;
+  text-decoration: none;
+}    
+
+#cover {
+    background: #fdcb26;  
+}
+
+.slide div.footer
+{
+    color: #fdcb26;
+}
+
+#cover h2 {
+    color: #073642;
+    margin:0 0 0;
+    text-align:center;
+    font-size:50px;
+}
+
+#cover p {
+    margin:10px 0 0;
+    text-align: center;
+    font-size: 32px;
+    line-height: 30px; 
+    color: #073642;
+}
+
+#cover p a {
+    color:#FFF;
+}
+
+.panel h2 {
+    color: #fdcb26;
+    text-align:center;
+    font-size: 70px;
+    margin-top: 140px;
+} 
+
+.footer {
+    position: fixed;
+    bottom: 70px;
+    left: 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#container {
+    width: 100%;
+    height: 100px;
+    position: relative;
+}
+
+#bottom-right {
+    right: 140px;
+    bottom: 60px;
+    position: absolute;
+}
+
+#bottom-left {
+    left: -20px;
+    bottom: 58px;
+    position: absolute;
+}
+
+#qrcode {
+	width: 350px;
+	height: 350px;
+	position: absolute;
+	left: 550px;
+	top: 150px;
+	background: url(../pictures/qrcode.png) no-repeat center center;
+}
+
+#conflogo {
+    background: url(../pictures/devgeekweek_logo.png) no-repeat center center;
+    width: 100%;
+    height: 193px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}

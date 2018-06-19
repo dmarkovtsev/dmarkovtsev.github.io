@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+
+
+<html lang="en">
+<head>
+    <title>Rapise Way to Rapid Web UI Test Automation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <link rel="stylesheet" href="themes/ribbon/styles/screen.css">
+    <link rel="stylesheet" href="css/hl.css">
+    <link rel="stylesheet" href="css/inflectra.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+</head>
+<body class="list">
+    <header class="caption">
+        <h1>Rapise Way to Rapid Web UI Test Automation</h1>
+        <p>Denis Markovtsev, DevGeekWeek 2018</p>
+
+    </header>
+    
+    <section id="cover" class="slide cover"><div><h2>Rapise Way to Rapid Web UI Test Automation</h2>
+<figure>
+    <img class="cover" src="pictures/RVLCoverColor85.png" />
+</figure>
+
+<div id="conflogo"></div>
+<p>Denis Markovtsev</p>
+
+<p>@dmarkovtsev</p>
+<div id="container">
+<div id="bottom-right">
+<img src="pictures/rapise_logo.png" width="150px" />
+</div>
+<div id="bottom-left">
+<img src="pictures/inflectra_logo.png" width="150px" />
+</div>
+</div>
+<div class="footer"><img src="pictures/inflectra_logo.png" width="150px" /></div>
+
+</div></section>
+<section class="slide" id="web-ui-test-automation-challenges"><div><h2>Web UI Test Automation Challenges</h2>
+<ul>
+  <li>Cross-browser recording/playback</li>
+  <li>Data loading delays</li>
+  <li>DOM element identification
+    <ul class="standout">
+      <li>Resilient XPath generation</li>
+    </ul>
+  </li>
+</ul>
+
+</div></section>
+<section class="slide" id="test-engineers-want-it-automated"><div><h2>Test Engineers Want It Automated</h2>
+<ul>
+  <li>Recorded test should work
+    <ul class="standout">
+      <li>Just after recording</li>
+      <li>When included into a test suite</li>
+      <li>If AUT is modified</li>
+    </ul>
+  </li>
+</ul>
+
+</div></section>
+<section class="slide" id="automation-project-types"><div><h2>Automation Project Types</h2>
+<figure>
+  <img src="pictures/UITestAutomationComplexity.png" class="tall_picture" />
+</figure>
+
+</div></section>
+<section class="slide" id="typical-test-scenario"><div><h2>Typical Test Scenario</h2>
+<video width="800" height="450" controls="">
+  <source src="pictures/BusinessCentralNewCustomer.mp4" type="video/mp4" />
+Your browser does not support the video tag.
+</video>
+
+</div></section>
+<section class="slide" id="typical-situation"><div><h2>Typical Situation</h2>
+<figure>
+  <img src="pictures/TypicalSituation1.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide" id="or-even-worse"><div><h2>Or Even Worse</h2>
+<figure>
+  <img src="pictures/TypicalSituation2.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide panel" id="reasons"><div><h2>Reasons?</h2>
+
+</div></section>
+<section class="slide example" id="reason-1-dynamic-id"><div><h2>Reason #1: Dynamic ID</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+//button[@id<span class="o">=</span><span class="s1">'89EF7'</span><span class="o">]</span>
+
+</code></pre></div></div>
+<p>More examples:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> 
+    <span class="na">id=</span><span class="s">"CustFreeInvoice_3_AccountingActionsTab_btn"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"appGridQueryFilter_Component8738712&gt;
+</span></code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="reason-2-weak-attribute-usage"><div><h2>Reason #2: Weak Attribute Usage</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//form[@id<span class="o">=</span><span class="s1">'aspnetForm'</span><span class="o">]</span>/div[2]/div/div/nav/div[2]
+/div/div/div[2]/div/div/div/div/div/div/div/div
+/div/div/div/div/button/span/span
+</code></pre></div></div>
+<p>Compare with:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//span[@aria-label<span class="o">=</span><span class="s1">'Customers'</span><span class="o">]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide" id="reason-3-hidden-layers"><div><h2>Reason #3: Hidden Layers</h2>
+<figure>
+  <img src="pictures/BusinessCentralLayers.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide example" id="reason-3-hidden-layers-1"><div><h2>Reason #3: Hidden Layers</h2>
+<p>Recorded:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//form[@id<span class="o">=</span><span class="s1">'aspnetForm'</span><span class="o">]</span>
+</code></pre></div></div>
+<p>Ways to fix:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//form[@controlname<span class="o">=</span><span class="s1">'Business Manager Role Center'</span><span class="o">]</span>
+</code></pre></div></div>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div[contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, @class, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' spa-view '</span><span class="o">)</span>
+and position<span class="o">()=</span>last<span class="o">()]</span>/form
+</code></pre></div></div>
+
+</div></section>
+<section class="slide panel" id="tools"><div><h2>Tools</h2>
+
+</div></section>
+<section class="slide" id="tools-wanted-to"><div><h2>Tools Wanted! To</h2>
+<ul>
+  <li>Detect dynamic IDs</li>
+  <li>Analyze identification power of attributes</li>
+  <li>Analyze classes</li>
+  <li>Identify anchors</li>
+</ul>
+
+</div></section>
+<section class="slide" id="get-unique-sorted-attribute-values"><div><h2>Get Unique Sorted Attribute Values</h2>
+<figure>
+  <img src="pictures/QueryAttrValues.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide" id="query-and-compare-documents"><div><h2>Query and Compare Documents</h2>
+<figure>
+  <img src="pictures/QueryMultipleDOMsWide.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide" id="calc-identification-power-of-attributes"><div><h2>Calc Identification Power of Attributes</h2>
+<figure>
+  <img src="pictures/AttrStatBusinessCentralFiltered.png" class="tall_picture" />
+</figure>
+
+</div></section>
+<section class="slide example" id="calc-identification-power-of-attributes-1"><div><h2>Calc Identification Power of Attributes</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">xmlattrstat</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c"># Fraction of elements uniquely determined</span>
+    <span class="c"># by their attributes</span>
+    <span class="n">baseRatio</span> <span class="o">=</span> <span class="n">xmlstat</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="n">xmlattributes</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="c"># Excluding given attribute to calculate</span>
+        <span class="c"># it's influence on identification</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">xmlstat</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+        <span class="n">importance</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseRatio</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">)</span><span class="o">/</span><span class="n">baseRatio</span>
+        <span class="k">if</span> <span class="n">importance</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">importance</span> <span class="o">=</span> <span class="mi">0</span>  
+        <span class="k">if</span> <span class="n">importance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>      
+            <span class="n">d</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">importance</span>
+    <span class="k">return</span> <span class="n">d</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="minimize-xpath"><div><h2>Minimize XPath</h2>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">title=</span><span class="s">"Account"</span><span class="nt">&gt;&lt;/span&gt;</span>
+        ...
+    <span class="nt">&lt;/div&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>Compare #1 and #2</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1: /div[1]/div[1]/span[@title<span class="o">=</span><span class="s1">'Account'</span><span class="o">]</span>
+2: //span[@title<span class="o">=</span><span class="s1">'Account'</span><span class="o">]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="define-anchors"><div><h2>Define Anchors</h2>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"Customers"</span> <span class="na">role=</span><span class="s">"grid"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">role=</span><span class="s">"cell"</span> <span class="na">title=</span><span class="s">"Contoso"</span><span class="nt">&gt;&lt;/span&gt;</span>
+        ...
+    <span class="nt">&lt;/div&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>Anchor the cell to the table</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div[@id<span class="o">=</span><span class="s1">'Customers'</span><span class="o">]</span>//span[@title<span class="o">=</span><span class="s1">'Contoso'</span><span class="o">]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="define-anchors-1"><div><h2>Define Anchors</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div
+<span class="o">[</span>contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, @class, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' spa-view '</span><span class="o">)</span>
+and position<span class="o">()=</span>last<span class="o">()]</span>
+</code></pre></div></div>
+<p>Find nearest anchor to recorded element and include it in XPath:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div
+<span class="o">[</span>contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, @class, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' spa-view '</span><span class="o">)</span>
+ and position<span class="o">()=</span>last<span class="o">()]</span>
+//span[@aria-label<span class="o">=</span><span class="s1">'Customers'</span><span class="o">]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="build-web-application-profile"><div><h2>Build Web Application Profile</h2>
+<div class="language-javascript codesmall highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">record</span><span class="p">:</span> 
+  <span class="p">{</span>
+    <span class="nl">attributes</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"name"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"title"</span>	<span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"href"</span><span class="p">,</span>	<span class="na">exclude</span><span class="p">:</span> <span class="s2">"javascript:"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"role"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"summary"</span><span class="p">,</span> <span class="na">notEmpty</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"data-menuitem-id"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"controlname"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"aria-label"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"id"</span><span class="p">,</span> <span class="na">notEmpty</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">exclude</span><span class="p">:</span> <span class="s2">"</span><span class="err">\\</span><span class="s2">d|[a-z]{5}"</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">classes</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"icon-Home"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"spa-view"</span> <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">anchors</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">xpath</span><span class="p">:</span> <span class="s2">"//div[contains(concat(' ', @class, ' '), ' spa-view ') and position()=last()]"</span> <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide" id="get-a-working-test-after-recording"><div><h2>Get A Working Test After Recording</h2>
+<video width="800" height="450" controls="">
+  <source src="pictures/BusinessCentralRecordPlayback.mp4" type="video/mp4" />
+Your browser does not support the video tag.
+</video>
+
+</div></section>
+<section class="slide" id="summary"><div><h2>Summary</h2>
+<ul>
+  <li>Automation engineers need reliable recording</li>
+  <li>They need tools for application analysis</li>
+  <li>With proper tools they can build an application profile</li>
+  <li>The profile can be used for automatic generation of resilient XPath expressions</li>
+</ul>
+
+</div></section>
+<section class="slide" id="thank-you"><div><h2>Thank you</h2>
+
+<p>Contacts:</p>
+<ul class="no-bullets fa-bullets">
+    <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://denis@inflectra.com">denis@inflectra.com</a></li>
+    <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/dmarkovtsev">dmarkovtsev</a></li>
+    <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/dmarkovtsev">dmarkovtsev</a></li>
+    <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="htts://inflectra.com/ideas">inflectra.com/ideas</a></li>
+</ul>
+<div id="qrcode"></div>
+
+
+</div></section>
+
+    <div class="progress"><div></div></div>
+    <script src="shower/shower.min.js"></script>
+    <!-- Copyright © 2018 Denis Markovtsev, DevGeekWeek 2018 -->
+</body>
+</html>
