@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+
+
+<html lang="en">
+<head>
+    <title>Rapid UI Test Automation - Avoiding the Pitfalls</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <link rel="stylesheet" href="themes/ribbon/styles/screen.css">
+    <link rel="stylesheet" href="css/hl.css">
+    <link rel="stylesheet" href="css/inflectra.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+</head>
+<body class="list">
+    <header class="caption">
+        <h1>Rapid UI Test Automation - Avoiding the Pitfalls</h1>
+        <p>Denis Markovtsev, STP Community Webinar 2018</p>
+
+    </header>
+    
+    <section id="cover" class="slide cover"><div><h2>Rapid UI Test Automation - Avoiding the Pitfalls</h2>
+<figure>
+    <img class="cover" src="pictures/polygons-colorful.jpg" />
+</figure>
+<p><br />
+<br />
+<br />
+<strong>STP Community Webinar</strong>
+<br />
+<br />
+<br />
+<br />
+<br />
+Denis Markovtsev
+<br />
+@dmarkovtsev
+<br />
+<br />
+August 8, 2018</p>
+
+</div></section>
+<section class="slide" id="automation-project-types"><div><h2>Automation Project Types</h2>
+<figure>
+  <img src="pictures/UITestAutomationComplexity.png" class="tall_picture" />
+</figure>
+
+</div></section>
+<section class="slide" id="technical-challenges"><div><h2>Technical Challenges</h2>
+<ul>
+  <li>Cross-browser recording/playback</li>
+  <li>Data loading and initialization delays</li>
+  <li>DOM element identification
+    <ul class="standout">
+      <li>Resilient XPath generation</li>
+    </ul>
+  </li>
+</ul>
+
+</div></section>
+<section class="slide" id="we-want-it-automated"><div><h2>We Want It Automated</h2>
+<ul>
+  <li>Recorded test should work
+    <ul class="standout">
+      <li>Just after recording</li>
+      <li>When included into a test suite</li>
+      <li>If AUT is modified</li>
+    </ul>
+  </li>
+</ul>
+
+</div></section>
+<section class="slide" id="typical-test-scenario"><div><h2>Typical Test Scenario</h2>
+<video width="800" height="450" controls="">
+  <source src="pictures/BusinessCentralNewCustomer.mp4" type="video/mp4" />
+Your browser does not support the video tag.
+</video>
+
+</div></section>
+<section class="slide" id="typical-situation"><div><h2>Typical Situation</h2>
+<figure>
+  <img src="pictures/TypicalSituation1.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide panel" id="common-pitfalls"><div><h2>Common Pitfalls</h2>
+
+</div></section>
+<section class="slide example" id="dynamic-id"><div><h2>Dynamic ID</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+//button[@id<span class="o">=</span><span class="s1">'89EF7'</span><span class="o">]</span>
+
+</code></pre></div></div>
+<p>More examples:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> 
+    <span class="na">id=</span><span class="s">"CustFreeInvoice_3_AccountingActionsTab_btn"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"appGridQueryFilter_Component8738712&gt;
+</span></code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="class-attribute"><div><h2>Class Attribute</h2>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn btn-primary btn-test"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>This will not work:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//button[@class<span class="o">=</span><span class="s1">'btn-primary'</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Solution:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//button[contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, 
+normalize-space<span class="o">(</span>@class<span class="o">)</span>, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' btn-primary '</span><span class="o">)]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide" id="hidden-layers"><div><h2>Hidden Layers</h2>
+<figure>
+  <img src="pictures/HiddenLayers.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide example" id="hidden-layers---use-anchors"><div><h2>Hidden Layers - Use Anchors</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div[contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, @class, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' spa-view '</span><span class="o">)</span>
+
+and position<span class="o">()=</span>last<span class="o">()]</span>
+
+//button[@id<span class="o">=</span><span class="s2">"greenButton"</span><span class="o">]</span>
+</code></pre></div></div>
+<p>Anchor:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//div[contains<span class="o">(</span>concat<span class="o">(</span><span class="s1">' '</span>, @class, <span class="s1">' '</span><span class="o">)</span>, <span class="s1">' spa-view '</span><span class="o">)</span>
+
+and position<span class="o">()=</span>last<span class="o">()]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide" id="more-puzzles"><div><h2>More Puzzles</h2>
+<p><a href="http://uitestingplayground.com" class="external-link">http://uitestingplayground.com</a></p>
+<figure>
+  <img src="pictures/UITAP.png" class="picture" />
+</figure>
+
+</div></section>
+<section class="slide panel" id="framework"><div><h2>Framework</h2>
+
+</div></section>
+<section class="slide" id="application-analysis"><div><h2>Application Analysis</h2>
+<ul>
+  <li>Detect dynamic IDs</li>
+  <li>Select attributes for recording</li>
+  <li>Select classes for recording</li>
+  <li>Identify anchors</li>
+</ul>
+
+</div></section>
+<section class="slide" id="basic-tools"><div><h2>Basic Tools</h2>
+<ul>
+  <li>XPath query</li>
+  <li>Save DOM as XML file
+    <ul>
+      <li>Compare DOM trees</li>
+      <li>Feed XML to automatic analysis tools</li>
+    </ul>
+  </li>
+</ul>
+
+</div></section>
+<section class="slide" id="example-attribute-analysis"><div><h2>Example: Attribute Analysis</h2>
+<p>The higher bar the better attribute for element identification</p>
+<figure>
+  <img src="pictures/AttrStatBusinessCentralFiltered.png" class="tall_picture" />
+</figure>
+
+</div></section>
+<section class="slide example" id="minimize-xpath"><div><h2>Minimize XPath</h2>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">title=</span><span class="s">"Account"</span><span class="nt">&gt;&lt;/span&gt;</span>
+        ...
+    <span class="nt">&lt;/div&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>Compare #1 and #2</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1: /div[1]/div[1]/span[@title<span class="o">=</span><span class="s1">'Account'</span><span class="o">]</span>
+2: //span[@title<span class="o">=</span><span class="s1">'Account'</span><span class="o">]</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide example" id="build-web-application-profile"><div><h2>Build Web Application Profile</h2>
+<div class="language-javascript codesmall highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">record</span><span class="p">:</span> 
+  <span class="p">{</span>
+    <span class="nl">attributes</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"name"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"title"</span>	<span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"href"</span><span class="p">,</span>	<span class="na">exclude</span><span class="p">:</span> <span class="s2">"javascript:"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"role"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"summary"</span><span class="p">,</span> <span class="na">notEmpty</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"data-menuitem-id"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"controlname"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"aria-label"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"id"</span><span class="p">,</span> <span class="na">notEmpty</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">exclude</span><span class="p">:</span> <span class="s2">"</span><span class="err">\\</span><span class="s2">d|[a-z]{5}"</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">classes</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"icon-Home"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"spa-view"</span> <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">anchors</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="na">xpath</span><span class="p">:</span> <span class="s2">"//div[contains(concat(' ', @class, ' '), ' spa-view ') and position()=last()]"</span> <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div></section>
+<section class="slide" id="object-repository"><div><h2>Object Repository</h2>
+<p>Helps with</p>
+<ul>
+  <li>Recording</li>
+  <li>Test management</li>
+  <li>Scriptless testing</li>
+  <li>Advanced playback</li>
+  <li>Data-driven testing</li>
+</ul>
+
+</div></section>
+<section class="slide" id="summary"><div><h2>Summary</h2>
+<p>To aviod pitfalls and be efficient in UI test automation arm yourself with</p>
+
+<ul>
+  <li>Application analysis tools</li>
+  <li>Powerful XPath generator</li>
+  <li>Object repository</li>
+</ul>
+
+<p><i class="fa fa-info monofa" aria-hidden="true"></i>A place to practice with your tools: <a href="http://uitestingplayground.com" class="external-link">http://uitestingplayground.com</a></p>
+
+</div></section>
+<section class="slide" id="thank-you"><div><h2>Thank you</h2>
+
+<p>Contacts:</p>
+<ul class="no-bullets fa-bullets">
+    <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://denis@inflectra.com">denis@inflectra.com</a></li>
+    <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/dmarkovtsev">dmarkovtsev</a></li>
+    <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/dmarkovtsev">dmarkovtsev</a></li>
+    <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="htts://inflectra.com/ideas">inflectra.com/ideas</a></li>
+</ul>
+<div id="qrcode"><i class="fa fa-address-card-o fa-5x monofa" aria-hidden="true"></i></div>
+
+
+</div></section>
+
+    <div class="progress"><div></div></div>
+    <script src="shower/shower.min.js"></script>
+    <!-- Copyright © 2018 Denis Markovtsev, STP Community Webinar 2018 -->
+</body>
+</html>
